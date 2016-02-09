@@ -1,4 +1,4 @@
-package jwiki.extras.test;
+package jwiki.test;
 
 import static org.junit.Assert.*;
 
@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import jwiki.core.Wiki;
 import jwiki.dwrap.Revision;
-import jwiki.extras.WikiGen;
 import jwiki.util.FError;
+import jwiki.util.WikiGen;
 
 /**
  * Action (non-admin) tests for jwiki's Wiki.java. PRECONDITION: Queries should be working because those are used to check the

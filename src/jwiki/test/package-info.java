@@ -6,4 +6,4 @@
  * 
  * @author Fastily
  */
-package jwiki.extras.test;
+package jwiki.test;

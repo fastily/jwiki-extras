@@ -1,4 +1,4 @@
-package util;
+package jwiki.util;
 
 import java.io.Console;
 import java.nio.file.Files;

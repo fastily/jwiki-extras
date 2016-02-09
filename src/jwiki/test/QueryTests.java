@@ -1,4 +1,4 @@
-package jwiki.extras.test;
+package jwiki.test;
 
 import static org.junit.Assert.*;
 
@@ -14,10 +14,10 @@ import jwiki.core.Wiki;
 import jwiki.dwrap.Contrib;
 import jwiki.dwrap.ImageInfo;
 import jwiki.dwrap.Revision;
-import jwiki.extras.WikiGen;
 import jwiki.util.FError;
 import jwiki.util.FL;
 import jwiki.util.Tuple;
+import jwiki.util.WikiGen;
 
 
 /**
