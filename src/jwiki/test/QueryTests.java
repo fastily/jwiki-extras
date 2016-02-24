@@ -257,27 +257,25 @@ public class QueryTests
 	public void testGetImageInfo()
 	{
 		// Test 1
-		ImageInfo result = wiki.getImageInfo("File:FastilyTestR.svg");
+		ImageInfo result = wiki.getImageInfo("File:FastilyTestR.svg").get(0);
 		assertEquals(new Tuple<>(512, 477), result.dimensions);
 		assertEquals("File:FastilyTest.svg", result.redirectsTo);
 		assertEquals(876, result.size);
-		assertEquals("File:FastilyTestR.svg", result.title);
 		assertEquals("275e96b2660f761cca02b8d2cb5425bcaab4dd98", result.sha1);
 		assertEquals("image/svg+xml", result.mime);
 		assertNull(result.thumbdimensions);
 		
 		// Test 2
-		result = wiki.getImageInfo("File:FastilyTest.svg");
+		result = wiki.getImageInfo("File:FastilyTest.svg").get(0);
 		assertEquals(new Tuple<>(512, 477), result.dimensions);
 		assertEquals(876, result.size);
-		assertEquals("File:FastilyTest.svg", result.title);
 		assertEquals("275e96b2660f761cca02b8d2cb5425bcaab4dd98", result.sha1);
 		assertEquals("image/svg+xml", result.mime);
 		assertEquals("https://upload.wikimedia.org/wikipedia/test/f/f7/FastilyTest.svg", result.url);
 		assertNull(result.thumbdimensions);
 
 		// Test 3
-		result = wiki.getImageInfo("File:FastilyTest.svg", 250, 250);
+		result = wiki.getImageInfo("File:FastilyTest.svg", 250, 250).get(0);
 		assertEquals(new Tuple<>(250, 233), result.thumbdimensions);
 	}
 
