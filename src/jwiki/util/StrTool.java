@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author Fastily
  *
  */
-public class StrTool
+public final class StrTool
 {
 	/**
 	 * A capturing group that matches any reserved regex operator character in the Java Pattern API.

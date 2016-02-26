@@ -15,7 +15,7 @@ import org.apache.commons.cli.Options;
  * @author Fastily
  * 
  */
-public class FCLI
+public final class FCLI
 {
 
 	/**

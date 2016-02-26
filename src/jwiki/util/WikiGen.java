@@ -4,7 +4,6 @@ import java.io.Console;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +21,12 @@ import jwiki.util.FError;
 import jwiki.util.FSystem;
 
 /**
- * Simple interactive password manager for ctools. Allows for preferential ranking of accounts used (e.g. you have
- * multiple bot accounts and want to set rankings for them)
+ * A simple console based-credential manager.
  * 
  * @author Fastily
  *
  */
-public class WikiGen
+public final class WikiGen
 {
 	/**
 	 * The default file names to save credentials under.
@@ -41,11 +39,6 @@ public class WikiGen
 	private static final String homefmt = FSystem.home + FSystem.psep;
 
 	/**
-	 * Used to keep track of ranks we've assigned to usernames during the initialization process.
-	 */
-	private static int rankcount = 1;
-
-	/**
 	 * The default WikiGen object created at run time.
 	 */
 	public static final WikiGen wg = initWG();
@@ -54,11 +47,6 @@ public class WikiGen
 	 * The master user/pass list.
 	 */
 	private HashMap<String, String> master = new HashMap<>();
-
-	/**
-	 * Credentials for primary, secondary, and tertiary accounts. These will be set if the user requested them.
-	 */
-	private HashMap<Integer, String> pwl = new HashMap<>();
 
 	/**
 	 * Cache saving Wiki objects so we don't do multiple log-ins by accident.
@@ -72,7 +60,6 @@ public class WikiGen
 	 */
 	private WikiGen() throws Throwable
 	{
-
 		Cipher c = Cipher.getInstance("AES");
 		c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Files.readAllBytes(findConfig(pf)), "AES"));
 		JSONObject jo = new JSONObject(new String(c.doFinal(Files.readAllBytes(findConfig(px))), "UTF-8"));
@@ -81,8 +68,6 @@ public class WikiGen
 		{
 			JSONObject entry = jo.getJSONObject(s);
 			master.put(s, entry.getString("pass"));
-			if (entry.has("rank"))
-				pwl.put(entry.getInt("rank"), s);
 		}
 	}
 
@@ -114,8 +99,10 @@ public class WikiGen
 			else
 				c.printf("Entered passwords do not match!%n");
 
-			if (!userAnsweredYes(c, "Continue? (y/N): "))
+			if(!c.readLine("Continue? (y/N): ").trim().toLowerCase().matches("(?i)(y|yes)"))
 				break;
+			
+			c.printf("%n");
 		}
 
 		if (ul.isEmpty())
@@ -130,18 +117,6 @@ public class WikiGen
 			jo.put(e.getKey(), internal);
 		}
 
-		// Do setup for ranking if applicable
-		if (ul.size() <= 26 && userAnsweredYes(c, "%nSetup optional account preference? (y/N): "))
-		{
-			ArrayList<String> l = new ArrayList<>(ul.keySet());
-			while (!l.isEmpty())
-			{
-				doUserRank(c, l, jo);
-				if (!userAnsweredYes(c, "Continue? (y/N): "))
-					break;
-			}
-		}
-
 		// Encrypt and dump to file
 		KeyGenerator kg = KeyGenerator.getInstance("AES");
 		kg.init(128);
@@ -153,41 +128,6 @@ public class WikiGen
 		writeFiles(px, cx.doFinal(jo.toString().getBytes("UTF-8")));
 
 		c.printf("Successfully written out to '%s', '%s', '%s%s' and '%s%s'%n", pf, px, homefmt, pf, homefmt, px);
-	}
-
-	/**
-	 * Creates interface to allow user to rank username by preference
-	 * 
-	 * @param c Our console object
-	 * @param l A list of usernames which have not yet been ranked. WARNING: method will remove a username from the list
-	 *           when it is selected by the user
-	 * @param jo The backing JSONObject which will be modified according to the user's selections.
-	 */
-	private static void doUserRank(Console c, ArrayList<String> l, JSONObject jo)
-	{
-		c.printf("Please select the account to rank %d%n", rankcount);
-		for (int i = 0; i < l.size(); i++)
-			c.printf("%c) %s%n", 97 + i, l.get(i));
-
-		String selection = c.readLine("%nSelection (character): ").trim().toLowerCase();
-
-		int index;
-		if (selection.isEmpty())
-			c.printf("You typed an empty String!  Doing nothing.%n");
-		else if (selection.matches("[a-z]") && (index = (int) selection.charAt(0) - 97) < l.size())
-			jo.getJSONObject(l.remove(index)).put("rank", rankcount++);
-	}
-
-	/**
-	 * Prompt user and see if they responded yes.
-	 * 
-	 * @param c The console to use
-	 * @param message The prompt
-	 * @return True iff the user answered 'y'
-	 */
-	private static boolean userAnsweredYes(Console c, String message)
-	{
-		return c.readLine(message).trim().toLowerCase().matches("(?i)(y|yes)");
 	}
 
 	/**
@@ -243,7 +183,7 @@ public class WikiGen
 	 * 
 	 * @param user The username to use
 	 * @param domain The domain (shorthand) to login at.
-	 * @return The requtested wiki obejct, or null if we have no such user-password combo
+	 * @return The requested wiki object, or null if we have no such user-password combo
 	 */
 	public synchronized Wiki get(String user, String domain)
 	{
@@ -261,43 +201,5 @@ public class WikiGen
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	/**
-	 * Creates or returns a wiki object using our locally stored credentials. This method is cached. Auto-sets domain to
-	 * 'commons.wikimedia.org'
-	 * 
-	 * @param user The username to use
-	 * @return The requtested wiki obejct, or null if we have no such user-password combo
-	 */
-	public synchronized Wiki get(String user)
-	{
-		return get(user, "commons.wikimedia.org");
-	}
-
-	/**
-	 * Creates or returns a wiki object pointed to by the specified rank. This method is cached. Auto-sets domain to
-	 * 'commons.wikimedia.org'
-	 * 
-	 * @param rank The preferred wiki object at this rank
-	 * @return The requested wiki obejct, or null if we have no such user-password combo
-	 */
-	public synchronized Wiki get(int rank)
-	{
-		String user = pwl.get(rank);
-		return user == null ? null : get(user);
-	}
-
-	/**
-	 * Creates or returns a wiki object pointed to by the specified rank. This method is cached.
-	 * 
-	 * @param rank The preferred wiki object at this rank
-	 * @param domain The domain (shorthand) to login at.
-	 * @return The requtested wiki obejct, or null if we have no such user-password combo
-	 */
-	public synchronized Wiki get(int rank, String domain)
-	{
-		String user = pwl.get(rank);
-		return user == null ? null : get(user, domain);
 	}
 }

@@ -15,7 +15,7 @@ import jwiki.util.Tuple;
  * @author Fastily
  *
  */
-public class WTool
+public final class WTool
 {
 	/**
 	 * Constructors disallowed
