@@ -26,10 +26,10 @@ public final class StrTool
 	}
 
 	/**
-	 * Determines if two String Lists share elements.
+	 * Determines if two String Lists share elements. WARNING: This is an expensive operation for big datasets
 	 * 
-	 * @param a List 1
-	 * @param b List 2
+	 * @param a List 1. Ideally set this to the shorter list
+	 * @param b List 2. Ideally set this to the longer list
 	 * @return True if the Lists intersect.
 	 */
 	public static boolean arraysIntersect(List<String> a, List<String> b)
@@ -64,14 +64,27 @@ public final class StrTool
 
 	/**
 	 * Gets the first substring of a String matching a regex.
+	 * 
 	 * @param p The regex to match
 	 * @param s The String to find the regex-matching substring in
- 	 * @return The substring, or the empty string if no matches were found.
+	 * @return The substring, or the empty string if no matches were found.
 	 */
 	public static String substringFromRegex(Pattern p, String s)
 	{
 		Matcher m = p.matcher(s);
 		return m.find() ? m.group() : "";
 	}
-	
+
+	/**
+	 * Inserts a String into a String. PRECONDITION: <code>index</code> is a valid index for <code>s</code>
+	 * 
+	 * @param s The string to insert into
+	 * @param insert The String to be inserted
+	 * @param index The index to insert <code>insert</code> at.
+	 * @return The modified String.
+	 */
+	public static String insertAt(String s, String insert, int index)
+	{
+		return s.substring(0, index) + insert + s.substring(index);
+	}
 }
