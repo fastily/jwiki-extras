@@ -1,4 +1,4 @@
-package jwiki.util;
+package jwikix.util;
 
 import jwiki.util.FError;
 

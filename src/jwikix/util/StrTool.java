@@ -1,4 +1,4 @@
-package jwiki.util;
+package jwikix.util;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -34,10 +34,7 @@ public final class StrTool
 	 */
 	public static boolean arraysIntersect(List<String> a, List<String> b)
 	{
-		for (String s : a)
-			if (b.contains(s))
-				return true;
-		return false;
+		return a.parallelStream().anyMatch(b::contains);
 	}
 
 	/**

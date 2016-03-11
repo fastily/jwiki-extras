@@ -1,4 +1,4 @@
-package jwiki.util;
+package jwikix.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -52,12 +52,12 @@ public final class WTool
 	 * @param tplate The template (including namespace) to generate a regex for.
 	 * @return A regex matching the specified template, its redirects, and parameters.
 	 */
-	public static String makeTRegex(Wiki wiki, String tplate)
+	public static String makeTemplateRegex(Wiki wiki, String tplate)
 	{
 		ArrayList<String> l = wiki.whatLinksHere(tplate, true);
 		l.add(wiki.nss(tplate));
 
-		return makeTemplateRegex(stripNamespaces(wiki, l));
+		return makeTitleRegex(stripNamespaces(wiki, l));
 	}
 
 	/**
@@ -67,7 +67,7 @@ public final class WTool
 	 * @param titles The titles of templates to match
 	 * @return The regex
 	 */
-	public static String makeTemplateRegex(ArrayList<String> titles)
+	public static String makeTitleRegex(ArrayList<String> titles)
 	{
 		ArrayList<String> l = new ArrayList<>();
 		for (String s : titles)

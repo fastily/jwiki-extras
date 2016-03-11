@@ -17,7 +17,7 @@ import jwiki.dwrap.Revision;
 import jwiki.util.FError;
 import jwiki.util.FL;
 import jwiki.util.Tuple;
-import jwiki.util.WikiGen;
+import jwikix.util.WikiGen;
 
 
 /**

@@ -10,7 +10,7 @@ import org.junit.Test;
 import jwiki.core.Wiki;
 import jwiki.dwrap.Revision;
 import jwiki.util.FError;
-import jwiki.util.WikiGen;
+import jwikix.util.WikiGen;
 
 /**
  * Action (non-admin) tests for jwiki's Wiki.java. PRECONDITION: Queries should be working because those are used to check the

@@ -1,4 +1,4 @@
-package jwiki.util;
+package jwikix.util;
 
 import java.io.Console;
 import java.nio.file.Files;
@@ -18,7 +18,6 @@ import org.json.JSONObject;
 import jwiki.core.ColorLog;
 import jwiki.core.Wiki;
 import jwiki.util.FError;
-import jwiki.util.FSystem;
 
 /**
  * A simple console based-credential manager.
