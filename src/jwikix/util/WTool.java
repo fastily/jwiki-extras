@@ -74,7 +74,7 @@ public final class WTool
 			l.add(StrTool.escapeRegexChars(s).replaceAll("( |_)", "( |_)"));
 
 		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?((\\p{Alnum}*?\\s*?\\=)??(\\s|\\||\\p{Alnum}|\\{\\{.+?\\}\\}))*?\\}\\}",
-				FString.fenceMaker("|", l));
+				FString.pipeFence(l));
 	}
 
 	/**
