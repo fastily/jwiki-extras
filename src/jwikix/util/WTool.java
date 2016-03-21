@@ -73,7 +73,7 @@ public final class WTool
 		for (String s : titles)
 			l.add(StrTool.escapeRegexChars(s).replaceAll("( |_)", "( |_)"));
 
-		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?((\\p{Alnum}*?\\s*?\\=)??(\\s|\\||\\p{Alnum}|\\{\\{.+?\\}\\}))*?\\}\\}",
+		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?((\\p{Alnum}*?\\s*?\\=)??(\\s|\\||\\{\\{.+?\\}\\}|.+?))*?\\}\\}",
 				FString.pipeFence(l));
 	}
 

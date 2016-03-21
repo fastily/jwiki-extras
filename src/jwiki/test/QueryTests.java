@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import jwiki.core.NS;
@@ -14,14 +13,12 @@ import jwiki.core.Wiki;
 import jwiki.dwrap.Contrib;
 import jwiki.dwrap.ImageInfo;
 import jwiki.dwrap.Revision;
-import jwiki.util.FError;
 import jwiki.util.FL;
 import jwiki.util.Tuple;
-import jwikix.util.WikiGen;
 
 
 /**
- * Query tests (non-admin) for jwiki's Wiki.java. Caveat: this is by no means comprehensive.
+ * Query tests (non-admin) for jwiki's Wiki.java.  These are only simple sanity checks; this is not a comprehensive test suite.
  * 
  * @author Fastily
  *
@@ -31,18 +28,7 @@ public class QueryTests
 	/**
 	 * The wiki object to use for this test set.
 	 */
-	private static Wiki wiki;
-	
-	/**
-	 * Initializes the wiki object for this test set.  Exits if it is unable to create the required Wiki object.
-	 */
-	@BeforeClass
-	public static void initWiki()
-	{
-		wiki = WikiGen.wg.get(Config.user, Config.domain);
-		if(wiki == null)
-			FError.errAndExit(String.format("Login for [ %s @ %s ] failed, exiting%n", Config.user, Config.domain));
-	}
+	private static final Wiki wiki = Config.getDefaultUser();
 	
 	/**
 	 * Tests for namespace handling
@@ -345,7 +331,7 @@ public class QueryTests
 		assertEquals(Instant.parse("2015-10-23T05:58:54Z"), result.get(0).timestamp);
 
 		// Test 2
-		result = wiki.getRevisions("User:FastilyClone/Page/1", 2, true);
+		result = wiki.getRevisions("User:FastilyClone/Page/1", 2, true, null, null);
 
 		assertEquals(2, result.size());
 		assertEquals("s1", result.get(1).summary);

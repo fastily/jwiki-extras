@@ -4,40 +4,25 @@ import static org.junit.Assert.*;
 
 import java.time.Instant;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import jwiki.core.Wiki;
 import jwiki.dwrap.Revision;
-import jwiki.util.FError;
-import jwikix.util.WikiGen;
 
 /**
  * Action (non-admin) tests for jwiki's Wiki.java. PRECONDITION: Queries should be working because those are used to check the
- * results of the actions. Caveat: This is by no means comprehensive
+ * results of the actions.  These are only simple sanity checks; this is not a comprehensive test suite.
  * 
  * @author Fastily
  *
  */
 public class ActionTests
 {
-	
 	/**
 	 * The wiki object to use for this test set.
 	 */
-	private static Wiki wiki;
-	
-	/**
-	 * Initializes the wiki object for this test set.  Exits if it is unable to create the required Wiki object.
-	 */
-	@BeforeClass
-	public static void initWiki()
-	{
-		wiki = WikiGen.wg.get(Config.user, Config.domain);
-		if(wiki == null)
-			FError.errAndExit(String.format("Login for [ %s @ %s ] failed, exiting%n", Config.user, Config.domain));
-	}
-	
+	private static Wiki wiki = Config.getDefaultUser();
+		
 	/**
 	 * Tests edit
 	 */
@@ -49,7 +34,7 @@ public class ActionTests
 
 		assertTrue(wiki.edit("User:Fastily/Sandbox/Edit", text, summary));
 
-		Revision top = wiki.getRevisions("User:Fastily/Sandbox/Edit", 1, false).get(0);
+		Revision top = wiki.getRevisions("User:Fastily/Sandbox/Edit", 1, false, null, null).get(0);
 		assertEquals(text, top.text);
 		assertEquals(summary, top.summary);
 	}

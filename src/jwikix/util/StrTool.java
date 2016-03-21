@@ -1,6 +1,7 @@
 package jwikix.util;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +17,13 @@ public final class StrTool
 	 * A capturing group that matches any reserved regex operator character in the Java Pattern API.
 	 */
 	private static final String rrc = String.format("([%s])", Pattern.quote("()[]{}<>\\^-=$!|?*+."));
+
+	/**
+	 * Random number generator.
+	 * 
+	 * @see #permuteFileName(String)
+	 */
+	private static final Random rand = new Random();
 
 	/**
 	 * Constructors disallowed
@@ -77,11 +85,24 @@ public final class StrTool
 	 * 
 	 * @param s The string to insert into
 	 * @param insert The String to be inserted
-	 * @param index The index to insert <code>insert</code> at.
+	 * @param index The index to insert <code>insert</code> at. The original character at this index will be shifted down
+	 *           one slot to make room for <code>insert</code>
 	 * @return The modified String.
 	 */
 	public static String insertAt(String s, String insert, int index)
 	{
 		return s.substring(0, index) + insert + s.substring(index);
+	}
+
+	/**
+	 * Permutes a filename by adding a random number to the end before the file extension. PRECONDITION: <code>fn</code>
+	 * is a valid filename with an extension, of the format (e.g. blahblah.jpg)
+	 * 
+	 * @param fn The base filename to permute
+	 * @return The permuted filename
+	 */
+	public static String permuteFileName(String fn)
+	{
+		return insertAt(fn, " " + rand.nextInt(), fn.lastIndexOf('.'));
 	}
 }
