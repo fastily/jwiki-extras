@@ -15,14 +15,14 @@ import jwiki.util.FL;
 import jwiki.util.Tuple;
 
 /**
- * Tests for MQuery in jwiki.
+ * Tests for MQuery in jwiki.  These are only simple sanity checks; this is not a comprehensive test suite.
  * @author Fastily
  *
  */
 public class MQueryTests
 {
 	/**
-	 * The wiki object to use for this test set.  These are only simple sanity checks; this is not a comprehensive test suite.
+	 * The Wiki object to use for this test set.
 	 */
 	private static final Wiki wiki = Config.getDefaultUser();
 	

@@ -21,7 +21,7 @@ public class ActionTests
 	/**
 	 * The wiki object to use for this test set.
 	 */
-	private static Wiki wiki = Config.getDefaultUser();
+	private static final Wiki wiki = Config.getDefaultUser();
 		
 	/**
 	 * Tests edit

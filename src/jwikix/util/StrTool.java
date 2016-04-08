@@ -1,5 +1,7 @@
 package jwikix.util;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -34,15 +36,30 @@ public final class StrTool
 	}
 
 	/**
-	 * Determines if two String Lists share elements. WARNING: This is an expensive operation for big datasets
+	 * Determines if two String Lists share elements. WARNING: This is potentially an expensive operation for big
+	 * datasets
 	 * 
-	 * @param a List 1. Ideally set this to the shorter list
-	 * @param b List 2. Ideally set this to the longer list
+	 * @param a List 1.
+	 * @param b List 2.
 	 * @return True if the Lists intersect.
 	 */
 	public static boolean arraysIntersect(List<String> a, List<String> b)
 	{
-		return a.parallelStream().anyMatch(b::contains);
+		List<String> l1;
+		HashSet<String> l2;
+
+		if (a.size() > b.size())
+		{
+			l2 = new HashSet<>(a);
+			l1 = b;
+		}
+		else
+		{
+			l2 = new HashSet<>(b);
+			l1 = a;
+		}
+
+		return l1.parallelStream().anyMatch(l2::contains);
 	}
 
 	/**
@@ -104,5 +121,17 @@ public final class StrTool
 	public static String permuteFileName(String fn)
 	{
 		return insertAt(fn, " " + rand.nextInt(), fn.lastIndexOf('.'));
+	}
+
+	/**
+	 * Determines if a List contains a String with at least one of the specified prefixes.
+	 * 
+	 * @param l The List of Strings to check for a String with a given prefix
+	 * @param prefixes The prefixes to look for in the list
+	 * @return True if the List contains a String that starts with one of the specified prefixes.
+	 */
+	public static boolean hasStrWithPrefix(ArrayList<String> l, ArrayList<String> prefixes)
+	{
+		return l.stream().anyMatch(s -> prefixes.stream().anyMatch(s::startsWith));
 	}
 }

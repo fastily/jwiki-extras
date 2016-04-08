@@ -323,7 +323,7 @@ public class QueryTests
 	public void testGetRevisions()
 	{
 		// Test 1
-		ArrayList<Revision> result = wiki.getRevisions("User:FastilyClone/Page/1");
+		ArrayList<Revision> result = wiki.getRevisions("User:FastilyClone/Page/1", -1, false, null, null);
 
 		assertEquals(3, result.size());
 		assertEquals("1", result.get(1).text);
