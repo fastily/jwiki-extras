@@ -15,10 +15,6 @@ import java.util.regex.Pattern;
  */
 public final class StrTool
 {
-	/**
-	 * A capturing group that matches any reserved regex operator character in the Java Pattern API.
-	 */
-	private static final String rrc = String.format("([%s])", Pattern.quote("()[]{}<>\\^-=$!|?*+."));
 
 	/**
 	 * Random number generator.
@@ -60,28 +56,6 @@ public final class StrTool
 		}
 
 		return l1.parallelStream().anyMatch(l2::contains);
-	}
-
-	/**
-	 * Makes a regex which matches a title on a page. Converts regex operators to their escaped counterparts.
-	 * 
-	 * @param title The title to convert into a regex.
-	 * @return The regex.
-	 */
-	public static String makePageTitleRegex(String title)
-	{
-		return String.format("(?si)(%s)", escapeRegexChars(title).replaceAll("( |_)", "( |_)"));
-	}
-
-	/**
-	 * Escapes reserved regex characters of the Java Pattern API in a String.
-	 * 
-	 * @param s The String to escape regex chars from
-	 * @return A copy of <code>s</code> with reserved regex chars escaped.
-	 */
-	public static String escapeRegexChars(String s)
-	{
-		return s.replaceAll(rrc, "\\\\" + "$1");
 	}
 
 	/**

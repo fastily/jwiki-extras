@@ -32,7 +32,7 @@ public final class MQueryX
 	 * @param titles The titles to get duplicates for
 	 * @return A Map where each key is the original, and each value is the first duplicate found.
 	 */
-	public static HashMap<String, String> getOnlySharedDuplicates(Wiki wiki, ArrayList<String> titles)
+	public static HashMap<String, String> getFirstOnlySharedDuplicate(Wiki wiki, ArrayList<String> titles)
 	{
 		return FL.toHM(MQuery.getSharedDuplicatesOf(wiki, titles).entrySet().stream().filter(e -> !e.getValue().isEmpty()),
 				Map.Entry::getKey, e -> e.getValue().get(0));
