@@ -1,6 +1,7 @@
 package jwikix.util;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jwiki.core.Wiki;
@@ -78,6 +79,18 @@ public class TParse
 	
 		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?(\\||\\{\\{.+?\\}\\}|.+?)*?\\}\\}",
 				FString.pipeFence(l));
+	}
+	
+	/**
+	 * Extracts a template from text.
+	 * @param p The template's Regex
+	 * @param text The text to look for <code>p</code> in
+	 * @return The template, or the empty string if nothing was found.
+	 */
+	public static String extractTemplate(Pattern p, String text)
+	{
+		Matcher m = p.matcher(text);
+		return m.find() ? m.group() : "";
 	}
 	
 }

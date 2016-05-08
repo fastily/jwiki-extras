@@ -429,11 +429,16 @@ public class QueryTests
 	 * Tests what transcludes here
 	 */
 	@Test
-	public void whatTranscludesHere()
+	public void testWhatTranscludesHere()
 	{
 		ArrayList<String> l = wiki.whatTranscludesHere("Template:FastilyTest");
 		
-		assertEquals(1, l.size());
+		assertEquals(2, l.size());
 		assertTrue(l.contains("User:Fastily/Sandbox/T"));
+		assertTrue(l.contains("FastilyTest"));
+		
+		l = wiki.whatTranscludesHere("Template:FastilyTest", NS.MAIN);
+		assertEquals(1, l.size());
+		assertTrue(l.contains("FastilyTest"));
 	}
 }

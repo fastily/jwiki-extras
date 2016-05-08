@@ -82,7 +82,7 @@ public final class StrTool
 	 */
 	public static String insertAt(String s, String insert, int index)
 	{
-		return s.substring(0, index) + insert + s.substring(index);
+		return new StringBuffer(s).insert(index, insert).toString();
 	}
 
 	/**
