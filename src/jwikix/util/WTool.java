@@ -1,7 +1,9 @@
 package jwikix.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.stream.Stream;
 
 import jwiki.core.NS;
 import jwiki.core.Wiki;
@@ -33,7 +35,7 @@ public final class WTool
 	 *           categories are properly escaped and appear as links.
 	 * @return A String with the titles as a linked, unordered list, in Wiki-text.
 	 */
-	public static String listify(String header, ArrayList<String> titles, boolean doEscape)
+	public static String listify(String header, Collection<String> titles, boolean doEscape)
 	{
 		String fmtStr = "* [[" + (doEscape ? ":" : "") + "%s]]\n";
 
@@ -42,6 +44,20 @@ public final class WTool
 			x += String.format(fmtStr, s);
 
 		return x;
+	}
+	
+	/**
+	 * Generates a Wiki-text ready, wiki-linked, unordered list from a list of titles.
+	 * 
+	 * @param header A header/lead string to apply at the beginning of the returned String.
+	 * @param titles The titles to use
+	 * @param doEscape Set as true to escape titles. i.e. adds a <code>:</code> before each link so that files and
+	 *           categories are properly escaped and appear as links.
+	 * @return A String with the titles as a linked, unordered list, in Wiki-text.
+	 */
+	public static String listify(String header, Stream<String> titles, boolean doEscape)
+	{
+		return listify(header, FL.toAL(titles), doEscape);
 	}
 
 	/**
