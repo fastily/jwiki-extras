@@ -98,6 +98,27 @@ public final class StrTool
 	}
 
 	/**
+	 * Checks the version String of a program with the version String of the server. PRECONDITION: <code>local</code> and
+	 * <code>ext</code> ONLY contain numbers and '.' characters.
+	 * 
+	 * @param local The version String of the program. (e.g. 0.2.1)
+	 * @param minVersion The version String of the server. (e.g. 1.3.2)
+	 * @return True if the version of the local String is greater than or equal to the server's version String.
+	 */
+	public static boolean versionCheck(String local, String minVersion)
+	{
+		try
+		{
+			return Integer.parseInt(local.replace(".", "")) >= Integer.parseInt(minVersion.replace(".", ""));
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
 	 * Determines if a List contains a String with at least one of the specified prefixes.
 	 * 
 	 * @param l The List of Strings to check for a String with a given prefix
