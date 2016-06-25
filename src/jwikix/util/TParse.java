@@ -9,6 +9,7 @@ import jwiki.util.FString;
 
 /**
  * Static, MediaWiki Template parsing methods.
+ * 
  * @author Fastily
  *
  */
@@ -24,7 +25,7 @@ public class TParse
 	 */
 	private TParse()
 	{
-		
+
 	}
 
 	/**
@@ -60,7 +61,7 @@ public class TParse
 	{
 		ArrayList<String> l = wiki.whatLinksHere(tplate, true);
 		l.add(wiki.nss(tplate));
-	
+
 		return TParse.makeTitleRegex(WTool.stripNamespaces(wiki, l));
 	}
 
@@ -76,13 +77,13 @@ public class TParse
 		ArrayList<String> l = new ArrayList<>();
 		for (String s : titles)
 			l.add(escapeRegexChars(s).replaceAll("( |_)", "( |_)"));
-	
-		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?(\\||\\{\\{.+?\\}\\}|.+?)*?\\}\\}",
-				FString.pipeFence(l));
+
+		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?(\\||\\{\\{.+?\\}\\}|.+?)*?\\}\\}", FString.pipeFence(l));
 	}
-	
+
 	/**
 	 * Extracts a template from text.
+	 * 
 	 * @param p The template's Regex
 	 * @param text The text to look for <code>p</code> in
 	 * @return The template, or the empty string if nothing was found.
@@ -92,5 +93,4 @@ public class TParse
 		Matcher m = p.matcher(text);
 		return m.find() ? m.group() : "";
 	}
-	
 }
