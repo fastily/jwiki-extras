@@ -2,7 +2,7 @@ package jwiki.test;
 
 import jwiki.core.Wiki;
 import jwiki.util.FError;
-import jwikix.util.WikiGen;
+import jwikix.core.WikiGen;
 
 /**
  * Configuration for tests

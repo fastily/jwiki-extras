@@ -1,8 +1,11 @@
 package jwikix.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jwiki.util.FL;
 
 /**
  * Miscellaneous Wiki-related String processing/parsing methods.
@@ -54,8 +57,20 @@ public final class StrTool
 	 * @param prefixes The prefixes to look for in the list
 	 * @return True if the List contains a String that starts with one of the specified prefixes.
 	 */
-	public static boolean hasStrWithPrefix(ArrayList<String> l, ArrayList<String> prefixes)
+	public static boolean hasStrWithPrefix(ArrayList<String> l, Collection<String> prefixes)
 	{
 		return l.stream().anyMatch(s -> prefixes.stream().anyMatch(s::startsWith));
+	}
+
+	/**
+	 * Filters Strings with a certain list of prefixes from an ArrayList.
+	 * 
+	 * @param l The ArrayList of source Strings.
+	 * @param prefixes Any String in <code>l</code> will be omitted from the final result.
+	 * @return A new ArrayList of Strings without the specified prefixes.
+	 */
+	public static ArrayList<String> omitStrWithPrefix(ArrayList<String> l, Collection<String> prefixes)
+	{
+		return FL.toAL(l.stream().filter(s -> prefixes.stream().noneMatch(s::startsWith)));
 	}
 }

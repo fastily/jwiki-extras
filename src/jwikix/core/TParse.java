@@ -1,4 +1,4 @@
-package jwikix.util;
+package jwikix.core;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -62,7 +62,7 @@ public class TParse
 		ArrayList<String> l = wiki.whatLinksHere(tplate, true);
 		l.add(wiki.nss(tplate));
 
-		return TParse.makeTitleRegex(WTool.stripNamespaces(wiki, l));
+		return TParse.makeTitleRegex(WikiX.stripNamespaces(wiki, l));
 	}
 
 	/**
