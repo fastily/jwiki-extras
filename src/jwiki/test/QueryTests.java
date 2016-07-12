@@ -64,7 +64,7 @@ public class QueryTests
 	@Test
 	public void testAllpages1()
 	{
-		ArrayList<String> result = wiki.allPages("Fastily/Sandbox/Page/", false, -1, NS.USER);
+		ArrayList<String> result = wiki.allPages("Fastily/Sandbox/Page/", false, false, -1, NS.USER);
 		ArrayList<String> expected = FL.toSAL("User:Fastily/Sandbox/Page/1", "User:Fastily/Sandbox/Page/2",
 				"User:Fastily/Sandbox/Page/3");
 
@@ -78,7 +78,7 @@ public class QueryTests
 	@Test
 	public void testAllPages2()
 	{
-		ArrayList<String> result = wiki.allPages("Fastily/Sandbox/Redirect", true, -1, NS.USER);
+		ArrayList<String> result = wiki.allPages("Fastily/Sandbox/Redirect", true, false, -1, NS.USER);
 		ArrayList<String> expected = FL.toSAL("User:Fastily/Sandbox/Redirect1", "User:Fastily/Sandbox/Redirect2");
 
 		assertEquals(2, result.size());
