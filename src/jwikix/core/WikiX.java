@@ -77,4 +77,24 @@ public final class WikiX
 			getCategoryMembersR(wiki, s, seen, l);
 		}
 	}
+
+	/**
+	 * Get the page author of a title. This is based on the first available public revision to a page.
+	 * 
+	 * @param wiki The Wiki object to use
+	 * @param title The title to query
+	 * @return The page author (without the "User:" prefix), or null on error.
+	 */
+	public static String getPageAuthor(Wiki wiki, String title)
+	{
+		try
+		{
+			return wiki.getRevisions(title, 1, true, null, null).get(0).user;
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
