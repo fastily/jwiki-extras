@@ -1,7 +1,7 @@
 package jwiki.test;
 
-import jwiki.core.Wiki;
-import jwiki.util.FError;
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.util.FError;
 import jwikix.core.WikiGen;
 
 /**

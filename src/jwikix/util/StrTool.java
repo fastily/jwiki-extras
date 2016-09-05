@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jwiki.util.FL;
+import fastily.jwiki.util.FL;
 
 /**
  * Miscellaneous Wiki-related String processing/parsing methods.

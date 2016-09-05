@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jwiki.core.Wiki;
-import jwiki.util.FString;
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.util.FString;
 
 /**
  * Static, MediaWiki Template parsing methods.

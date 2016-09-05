@@ -8,11 +8,11 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
-import jwiki.core.MQuery;
-import jwiki.core.Wiki;
-import jwiki.dwrap.ImageInfo;
-import jwiki.util.FL;
-import jwiki.util.Tuple;
+import fastily.jwiki.core.MQuery;
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.dwrap.ImageInfo;
+import fastily.jwiki.util.FL;
+import fastily.jwiki.util.Tuple;
 
 /**
  * Tests for MQuery in jwiki.  These are only simple sanity checks; this is not a comprehensive test suite.

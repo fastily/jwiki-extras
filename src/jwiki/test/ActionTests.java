@@ -6,8 +6,8 @@ import java.time.Instant;
 
 import org.junit.Test;
 
-import jwiki.core.Wiki;
-import jwiki.dwrap.Revision;
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.dwrap.Revision;
 
 /**
  * Action (non-admin) tests for jwiki's Wiki.java. PRECONDITION: Queries should be working because those are used to check the

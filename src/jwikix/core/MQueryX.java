@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import jwiki.core.MQuery;
-import jwiki.core.Wiki;
-import jwiki.util.FL;
+import fastily.jwiki.core.MQuery;
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.util.FL;
 
 /**
  * Static methods wrapping and extending MQuery functions.

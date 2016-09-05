@@ -8,13 +8,13 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import jwiki.core.NS;
-import jwiki.core.Wiki;
-import jwiki.dwrap.Contrib;
-import jwiki.dwrap.ImageInfo;
-import jwiki.dwrap.Revision;
-import jwiki.util.FL;
-import jwiki.util.Tuple;
+import fastily.jwiki.core.NS;
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.dwrap.Contrib;
+import fastily.jwiki.dwrap.ImageInfo;
+import fastily.jwiki.dwrap.Revision;
+import fastily.jwiki.util.FL;
+import fastily.jwiki.util.Tuple;
 
 
 /**

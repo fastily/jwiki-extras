@@ -15,9 +15,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.json.JSONObject;
 
-import jwiki.core.ColorLog;
-import jwiki.core.Wiki;
-import jwiki.util.FError;
+import fastily.jwiki.core.ColorLog;
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.util.FError;
 import jwikix.util.FSystem;
 
 /**

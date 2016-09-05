@@ -1,5 +1,7 @@
 package jwikix.ui;
 
+import fastily.jwiki.core.Wiki;
+import fastily.jwiki.util.FError;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,8 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import jwiki.core.Wiki;
-import jwiki.util.FError;
 
 /**
  * Implements a basic login form
