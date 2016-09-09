@@ -1,4 +1,4 @@
-package jwikix.ui;
+package fastily.jwikix.ui;
 
 import javafx.concurrent.Task;
 import javafx.scene.Scene;

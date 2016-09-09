@@ -1,4 +1,4 @@
-package jwikix.util;
+package fastily.jwikix.util;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,8 +1,8 @@
-package jwiki.test;
+package fastily.jwiki.test;
 
 import fastily.jwiki.core.Wiki;
 import fastily.jwiki.util.FError;
-import jwikix.core.WikiGen;
+import fastily.jwikix.core.WikiGen;
 
 /**
  * Configuration for tests

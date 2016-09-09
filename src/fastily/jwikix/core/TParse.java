@@ -1,4 +1,4 @@
-package jwikix.core;
+package fastily.jwikix.core;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

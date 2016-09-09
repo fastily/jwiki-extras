@@ -1,4 +1,4 @@
-package jwiki.test;
+package fastily.jwiki.test;
 
 import static org.junit.Assert.*;
 

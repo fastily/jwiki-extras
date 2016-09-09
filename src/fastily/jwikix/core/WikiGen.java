@@ -1,4 +1,4 @@
-package jwikix.core;
+package fastily.jwikix.core;
 
 import java.io.Console;
 import java.nio.file.Files;
@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import fastily.jwiki.core.ColorLog;
 import fastily.jwiki.core.Wiki;
 import fastily.jwiki.util.FError;
-import jwikix.util.FSystem;
+import fastily.jwikix.util.FSystem;
 
 /**
  * A simple console based-credential manager.

@@ -1,4 +1,4 @@
-package jwikix.util;
+package fastily.jwikix.util;
 
 import java.nio.file.FileSystems;
 

@@ -1,4 +1,4 @@
-package jwikix.ui;
+package fastily.jwikix.ui;
 
 import fastily.jwiki.core.Wiki;
 import fastily.jwiki.util.FError;
