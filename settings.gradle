@@ -1,0 +1,4 @@
+rootProject.name = 'jwiki-extras'
+
+include ":jwiki"
+// project(":jwiki").projectDir = file("../jwiki")
