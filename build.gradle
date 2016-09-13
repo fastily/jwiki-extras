@@ -20,6 +20,24 @@ compileJava {
     targetCompatibility = "1.8"
 }
 
+
+task writeNewPom << {
+    pom {
+        project {
+            inceptionYear '2016'
+            licenses {
+                license {
+                    name 'GNU General Public License, Version 3.0'
+                    url 'https://www.gnu.org/licenses/gpl-3.0.txt'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("$buildDir/pom.xml")
+}
+build.finalizedBy(writeNewPom)
+
+
 task genJavadoc(type: Javadoc) {
   source = sourceSets.main.allJava
   
