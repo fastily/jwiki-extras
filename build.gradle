@@ -1,3 +1,6 @@
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
@@ -65,8 +68,16 @@ dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
 
-    // compile project(":jwiki")
-    compile 'fastily:jwiki:1.2.1'
+	if(Files.exists(Paths.get("../jwiki")))
+	{
+		println "Building ${rootProject.name} with local"
+    	compile project(":jwiki")
+    }
+    else
+    {
+    	println "Building ${rootProject.name} with remote"
+    	compile 'fastily:jwiki:1.2.1'
+    }
 
     testCompile 'junit:junit:4.12'
 }
