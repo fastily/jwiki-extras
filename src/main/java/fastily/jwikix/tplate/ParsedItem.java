@@ -1,10 +1,13 @@
 package fastily.jwikix.tplate;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 import org.json.JSONObject;
+import org.json.XML;
 
 import fastily.jwiki.core.Reply;
+import fastily.jwiki.core.Wiki;
 import fastily.jwiki.util.FL;
 
 /**
@@ -48,18 +51,121 @@ public class ParsedItem
 	}
 
 	/**
-	 * Creates a ParsedItem with the given JSONObject.
+	 * Parses specified wikitext and creates a ParsedItem.
 	 * 
-	 * @param r The Reply to use.
-	 * @return A ParsedItem of the parsed page.
+	 * @param wiki The Wiki object to make the API call with
+	 * @param title The title to use as if the specified wikitext were on this page. Optional param - set null to
+	 *           disable.
+	 * @param text The wikitext to parse
+	 * @return A ParsedItem representation of this wikitext.
 	 */
-	public static ParsedItem parse(JSONObject r)
+	public static ParsedItem parse(Wiki wiki, String title, String text)
 	{
-		return new ParsedItem(r.has("root") ? r.getJSONObject("root") : r);
+		ArrayList<String> l = FL.toSAL("text", text);
+		if (title != null)
+		{
+			l.add("title");
+			l.add(title);
+		}
+
+		return parse(wiki, l);
 	}
 
 	/**
-	 * Generates a wikitext representation of this Object.
+	 * Parses the content of a Wiki page and creates a ParsedItem.
+	 * 
+	 * @param wiki The Wiki to make the API call with
+	 * @param page The title of the page to parse
+	 * @return A ParsedItem representation of <code>page</code>
+	 */
+	public static ParsedItem parse(Wiki wiki, String page)
+	{
+		return parse(wiki, FL.toSAL("page", page));
+	}
+
+	/**
+	 * Performs <code>action=parse</code> on a page with a given set of parameters.
+	 * 
+	 * @param wiki The Wiki object to use
+	 * @param params The control parameters to apply. Ex: <code>page</code>, <code>text</code>, <code>title</code>.
+	 * @return A ParsedItem representation of the page/text.
+	 */
+	private static ParsedItem parse(Wiki wiki, ArrayList<String> params)
+	{
+		ArrayList<String> pl = FL.toSAL("prop", "parsetree");
+		pl.addAll(params);
+		return new ParsedItem(
+				XML.toJSONObject(wiki.basicGET("parse", pl.toArray(new String[0])).getJSONObjectR("parsetree").getString("*"))
+						.getJSONObject("root"));
+	}
+
+	/**
+	 * Recursively gets nested ParsedItem objects.
+	 * 
+	 * @return A Stream containing any found nested ParsedItem objects.
+	 */
+	private Stream<ParsedItem> getNestedParsedItems()
+	{
+		return tplates.stream().flatMap(t -> FL.mapToList(t.params).stream()).filter(e -> e.y.isParsedItem())
+				.map(e -> e.y.getParsedItem());
+	}
+
+	/**
+	 * Recursively finds Template objects contained by any nested ParsedItem objects. This is a helper method for
+	 * <code>getTemplateR()</code>
+	 * 
+	 * @param tl Templates found will be added to this ArrayList.
+	 * 
+	 * @see #getTemplateR()
+	 */
+	private void getTemplatesR(ArrayList<Template> tl)
+	{
+		tl.addAll(tplates);
+		getNestedParsedItems().forEach(pi -> pi.getTemplatesR(tl));
+	}
+
+	/**
+	 * Recursively gets Template objects contained by any nested ParsedItem objects.
+	 * 
+	 * @return An ArrayList with any nested Template objects.
+	 */
+	public ArrayList<Template> getTemplateR()
+	{
+		ArrayList<Template> tl = new ArrayList<>();
+		getTemplatesR(tl);
+
+		return tl;
+	}
+
+	/**
+	 * Recursively gets the content (ie anything which is not a template/comment/header) of this ParsedItem. This is a
+	 * helper method for <code>getContentsR()</code>
+	 * 
+	 * @param cl The ArrayList where the content of nested ParsedItem objects will be copied to.
+	 * 
+	 * @see #getContentsR()
+	 */
+	private void getContentsR(ArrayList<String> cl)
+	{
+		cl.addAll(contents);
+		getNestedParsedItems().forEach(pi -> pi.getContentsR(cl));
+	}
+
+	/**
+	 * Recursively gets the content (ie anything which is not a template/comment/header) of this ParsedItem.
+	 * 
+	 * @return A String containing any content.
+	 */
+	public String getContentsR()
+	{
+		ArrayList<String> cl = new ArrayList<>();
+		getContentsR(cl);
+
+		return String.join(" ", cl.toArray(new String[0]));
+	}
+
+	/**
+	 * Renders this ParsedItem as wikitext. Does not pretty-print output.
 	 */
 	public String toString()
 	{

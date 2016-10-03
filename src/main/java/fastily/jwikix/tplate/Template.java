@@ -1,7 +1,7 @@
 package fastily.jwikix.tplate;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.json.JSONObject;
 
@@ -23,12 +23,12 @@ public class Template
 	/**
 	 * This Template's parameters.
 	 */
-	public final HashMap<String, TValue> params = new HashMap<>();
+	public final TreeMap<String, TValue> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	/**
 	 * Creates a new Template Object with the given Reply.
 	 * 
-	 * @param r The Reply to create the Template with. PRECONDITION: This is a JSONObject that contains a Tempalate
+	 * @param r The Reply to create the Template with. PRECONDITION: This is a JSONObject that contains a Template
 	 *           Object.
 	 */
 	protected Template(Reply r)
@@ -56,16 +56,32 @@ public class Template
 
 		return null;
 	}
+	
 
 	/**
 	 * Generates a wikitext representation of this Template.
 	 */
 	public String toString()
 	{
+		return toString(false);
+	}
+	
+	/**
+	 * Generates a wikitext representation of this Template.
+	 * @param indent Set True to add a newline between each parameter line.
+	 * @return A wikitext representation of this Template.
+	 */
+	public String toString(boolean indent)
+	{
+		String base = (indent ? "%n" : "") + "|%s=%s";
+		
 		String x = "";
 		for (Map.Entry<String, TValue> e : params.entrySet())
-			x += String.format("|%s=%s", e.getKey(), e.getValue());
+			x += String.format(base, e.getKey(), e.getValue());
 
+		if(indent)
+			x += "%n";
+		
 		return String.format("{{%s%s}}", title, x);
 	}
 
@@ -85,7 +101,7 @@ public class Template
 		/**
 		 * The variable storing a ParsedItem value if this TValue contains a ParsedItem.
 		 */
-		private ParsedItem tVal;
+		private ParsedItem pVal;
 
 		/**
 		 * Constructor, creates a TValue
@@ -106,16 +122,56 @@ public class Template
 		public void setValue(Object o)
 		{
 			sVal = null;
-			tVal = null;
+			pVal = null;
 
 			if (o instanceof String)
 				sVal = (String) o;
 			else if (o instanceof Integer)
 				sVal = "" + (Integer) o;
 			else if (o instanceof JSONObject)
-				tVal = new ParsedItem((JSONObject) o);
+				pVal = new ParsedItem((JSONObject) o);
 			else
 				throw new IllegalArgumentException("What is " + o);
+		}
+
+		/**
+		 * Determines whether this TValue contains a String.
+		 * 
+		 * @return True if the TValue contains a String.
+		 */
+		public boolean isString()
+		{
+			return sVal != null;
+		}
+
+		/**
+		 * Determines whether this TValue contains a ParsedItem.
+		 * 
+		 * @return True if the TValue contains a ParsedItem.
+		 */
+		public boolean isParsedItem()
+		{
+			return pVal != null;
+		}
+
+		/**
+		 * Gets the String wrapped by this TValue, if possible.
+		 * 
+		 * @return The String wrapped by this TValue, or null if it does not wrap a String value.
+		 */
+		public String getString()
+		{
+			return sVal;
+		}
+
+		/**
+		 * Gets the ParsedItem wrapped by this TValue, if possible.
+		 * 
+		 * @return The ParsedItem wrapped by this TValue, or null if it does not wrap a ParsedItem value.
+		 */
+		public ParsedItem getParsedItem()
+		{
+			return pVal;
 		}
 
 		/**
@@ -123,7 +179,7 @@ public class Template
 		 */
 		public String toString()
 		{
-			return sVal == null ? tVal.toString() : sVal;
+			return sVal == null ? pVal.toString() : sVal;
 		}
 	}
 }
