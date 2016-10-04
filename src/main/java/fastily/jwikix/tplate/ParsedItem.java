@@ -171,7 +171,7 @@ public class ParsedItem
 	{
 		String x = "";
 		for (Template t : tplates)
-			x += t.toString() + "\n";
+			x += t.toString();
 
 		x += String.join(" ", comments.toArray(new String[0]));
 		x += String.join(" ", contents.toArray(new String[0]));

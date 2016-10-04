@@ -1,11 +1,13 @@
 package fastily.jwikix.tplate;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.json.JSONObject;
 
 import fastily.jwiki.core.Reply;
+import fastily.jwiki.util.FL;
 
 /**
  * Represents a Template parsed from MediaWiki's <code>parse</code> module.
@@ -16,14 +18,15 @@ import fastily.jwiki.core.Reply;
 public class Template
 {
 	/**
-	 * The title of the Template
+	 * The title of the Template. This is generally the Template title without the <code>Template:</code> namespace
+	 * prefix.
 	 */
-	public final String title;
+	public String title;
 
 	/**
 	 * This Template's parameters.
 	 */
-	public final TreeMap<String, TValue> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	protected final TreeMap<String, TValue> params = new TreeMap<>(new TValueCmp());
 
 	/**
 	 * Creates a new Template Object with the given Reply.
@@ -35,6 +38,52 @@ public class Template
 	{
 		title = r.getString("title");
 		TUtils.getJAOf(r, "part").stream().forEach(p -> params.put(resolveName(p), new TValue(p.get("value"))));
+	}
+
+	/**
+	 * Creates a new Template
+	 * 
+	 * @param title The title of the Template. This should not include the <code>Template:</code> prefix.
+	 * @param params Optional initial parameters to give the Template, of the form
+	 *           <code>[key1, value1, key2, value2, ...]</code>. Each value in the pair will be interpreted as a String.
+	 */
+	public Template(String title, String... params)
+	{
+		this.title = title;
+		put(FL.pMap(params));
+	}
+
+	/**
+	 * Puts a Map of key-value parameters in this Template.
+	 * 
+	 * @param m The Map to use. The values in the Map must be either String or ParsedItem.
+	 */
+	public void put(Map<String, ?> m)
+	{
+		for (Map.Entry<String, ?> e : m.entrySet())
+			put(e.getKey(), e.getValue());
+	}
+
+	/**
+	 * Puts a key value parameter in this Template.
+	 * 
+	 * @param k The key to use
+	 * @param v The value, which must be a String or ParsedItem.
+	 */
+	public void put(String k, Object v)
+	{
+		params.put(k, new TValue(v));
+	}
+
+	/**
+	 * Determines if a Template has a given key.
+	 * 
+	 * @param k The key to search for
+	 * @return True if the Template contains the specified key.
+	 */
+	public boolean has(String k)
+	{
+		return params.containsKey(k);
 	}
 
 	/**
@@ -56,7 +105,6 @@ public class Template
 
 		return null;
 	}
-	
 
 	/**
 	 * Generates a wikitext representation of this Template.
@@ -65,23 +113,24 @@ public class Template
 	{
 		return toString(false);
 	}
-	
+
 	/**
 	 * Generates a wikitext representation of this Template.
+	 * 
 	 * @param indent Set True to add a newline between each parameter line.
 	 * @return A wikitext representation of this Template.
 	 */
 	public String toString(boolean indent)
 	{
 		String base = (indent ? "%n" : "") + "|%s=%s";
-		
+
 		String x = "";
 		for (Map.Entry<String, TValue> e : params.entrySet())
 			x += String.format(base, e.getKey(), e.getValue());
 
-		if(indent)
-			x += "%n";
-		
+		if (indent)
+			x += "\n";
+
 		return String.format("{{%s%s}}", title, x);
 	}
 
@@ -106,7 +155,8 @@ public class Template
 		/**
 		 * Constructor, creates a TValue
 		 * 
-		 * @param o A String or ParsedItem to be stored in the TValue.
+		 * @param o A String or ParsedItem to be stored in the TValue. PRECONDITION: <code>o</code> is either a String or
+		 *           ParsedItem.
 		 */
 		protected TValue(Object o)
 		{
@@ -180,6 +230,25 @@ public class Template
 		public String toString()
 		{
 			return sVal == null ? pVal.toString() : sVal;
+		}
+	}
+
+	/**
+	 * A Comparator for Template titles or Template <code>params</code> keys.
+	 * 
+	 * @author Fastily
+	 *
+	 */
+	public static class TValueCmp implements Comparator<String>
+	{
+		/**
+		 * Does a compareIgnoreCase, but also a compareIgnoreCase where underscores for both inputs are substituted for
+		 * spaces.
+		 */
+		public int compare(String o1, String o2)
+		{
+			int r1 = o1.compareToIgnoreCase(o2);
+			return r1 == 0 ? r1 : o1.replace('_', ' ').compareToIgnoreCase(o2.replace('_', ' '));
 		}
 	}
 }
