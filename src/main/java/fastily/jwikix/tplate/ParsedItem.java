@@ -37,7 +37,7 @@ public class ParsedItem
 	{
 		comments = TUtils.strsFromJA(r, "comment");
 		contents = TUtils.strsFromJA(r, "content");
-		tplates = FL.toAL(TUtils.getJAOf(r, "template").stream().map(Template::new));
+		tplates = FL.toAL(TUtils.getJAOf(r, "template").stream().map(x -> new Template(x, this)));
 	}
 
 	/**

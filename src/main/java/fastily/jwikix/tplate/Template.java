@@ -24,6 +24,11 @@ public class Template
 	public String title;
 
 	/**
+	 * The ParsedItem which owns this Template, if applicable.
+	 */
+	private ParsedItem parent = null;
+
+	/**
 	 * This Template's parameters.
 	 */
 	protected final TreeMap<String, TValue> params = new TreeMap<>(new TValueCmp());
@@ -33,9 +38,11 @@ public class Template
 	 * 
 	 * @param r The Reply to create the Template with. PRECONDITION: This is a JSONObject that contains a Template
 	 *           Object.
+	 * @param parent The parent ParsedItem, if applicable. Optional param - set null to disable.
 	 */
-	protected Template(Reply r)
+	protected Template(Reply r, ParsedItem parent)
 	{
+		this.parent = parent;
 		title = r.getString("title");
 		TUtils.getJAOf(r, "part").stream().forEach(p -> params.put(resolveName(p), new TValue(p.get("value"))));
 	}
@@ -76,6 +83,27 @@ public class Template
 	}
 
 	/**
+	 * Append a String value to a Template parameter. Creates a new parameter for the Template if <code>k</code> does not
+	 * have a corresponding value.
+	 * 
+	 * @param k The key to use
+	 * @param s The String to append.
+	 */
+	public void append(String k, String s)
+	{
+		if (!has(k))
+			put(k, s);
+		else
+		{
+			TValue v = params.get(k);
+			if (v.isString())
+				v.setValue(v.getString() + s);
+			else
+				v.getParsedItem().contents.add(s);
+		}
+	}
+
+	/**
 	 * Determines if a Template has a given key.
 	 * 
 	 * @param k The key to search for
@@ -84,6 +112,18 @@ public class Template
 	public boolean has(String k)
 	{
 		return params.containsKey(k);
+	}
+
+	/**
+	 * Drops this Template from any parent ParsedItem which contains this Template in its <code>tplates</code> list.
+	 * 
+	 * @return This Object, for chaining convenience.
+	 */
+	public Template drop()
+	{
+		if (parent != null)
+			parent.tplates.remove(this);
+		return this;
 	}
 
 	/**
@@ -178,6 +218,8 @@ public class Template
 				sVal = (String) o;
 			else if (o instanceof Integer)
 				sVal = "" + (Integer) o;
+			else if (o instanceof Boolean)
+				sVal = "" + (Boolean) o;
 			else if (o instanceof JSONObject)
 				pVal = new ParsedItem((JSONObject) o);
 			else
