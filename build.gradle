@@ -6,20 +6,10 @@ version="1.0.0"
 description="jwiki-extras build script"
 group="fastily"
 
-sourceSets {
-    main {
-        resources {
-            srcDirs = ['.']
-            includes=['*.md']
-        }
-    }
-}
-
 compileJava {
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
 }
-
 
 task writeNewPom << {
     pom {
@@ -62,8 +52,11 @@ repositories {
 }
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.21'
     compile project(":jwiki")
 
     testCompile 'junit:junit:4.12'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
 }

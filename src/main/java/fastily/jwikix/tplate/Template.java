@@ -104,6 +104,17 @@ public class Template
 	}
 
 	/**
+	 * Gets the value associated with a specific key.
+	 * 
+	 * @param key The key to get a TValue for.
+	 * @return The TValue, or null if a TValue doesn't exist for the specified key.
+	 */
+	public TValue get(String key)
+	{
+		return params.get(key);
+	}
+
+	/**
 	 * Determines if a Template has a given key.
 	 * 
 	 * @param k The key to search for
@@ -136,10 +147,8 @@ public class Template
 	{
 		Object o = jo.get("name");
 
-		if (o instanceof String)
-			return (String) o;
-		else if (o instanceof Integer)
-			return "" + (Integer) o;
+		if (o instanceof String || o instanceof Integer)
+			return o.toString();
 		else if (o instanceof JSONObject)
 			return "" + ((JSONObject) o).getInt("index");
 
@@ -214,16 +223,11 @@ public class Template
 			sVal = null;
 			pVal = null;
 
-			if (o instanceof String)
-				sVal = (String) o;
-			else if (o instanceof Integer)
-				sVal = "" + (Integer) o;
-			else if (o instanceof Boolean)
-				sVal = "" + (Boolean) o;
-			else if (o instanceof JSONObject)
+			if (o instanceof JSONObject)
 				pVal = new ParsedItem((JSONObject) o);
 			else
-				throw new IllegalArgumentException("What is " + o);
+				sVal = o.toString();
+
 		}
 
 		/**
