@@ -51,7 +51,7 @@ public class MQueryTests
 	@Test
 	public void testGetImageInfo()
 	{
-		HashMap<String, ArrayList<ImageInfo>> result = MQuery.getImageInfo(wiki, -1, -1, FL.toSAL("File:FastilyTestCircle1.svg", "File:FastilyTestCircle2.svg"));
+		HashMap<String, ArrayList<ImageInfo>> result = MQuery.getImageInfo(wiki, FL.toSAL("File:FastilyTestCircle1.svg", "File:FastilyTestCircle2.svg"));
 		
 		assertTrue(result.containsKey("File:FastilyTestCircle1.svg"));
 		assertTrue(result.containsKey("File:FastilyTestCircle2.svg"));

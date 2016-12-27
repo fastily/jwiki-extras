@@ -6,7 +6,6 @@ import java.util.TreeMap;
 
 import org.json.JSONObject;
 
-import fastily.jwiki.core.Reply;
 import fastily.jwiki.util.FL;
 
 /**

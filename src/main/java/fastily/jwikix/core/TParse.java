@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fastily.jwiki.core.Wiki;
-import fastily.jwiki.util.FString;
+import fastily.jwiki.util.FL;
 
 /**
  * Static, MediaWiki Template parsing methods.
@@ -78,7 +78,7 @@ public class TParse
 		for (String s : titles)
 			l.add(escapeRegexChars(s).replaceAll("( |_)", "( |_)"));
 
-		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?(\\||\\{\\{.+?\\}\\}|.+?)*?\\}\\}", FString.pipeFence(l));
+		return String.format("(?si)\\{\\{\\s*?(%s)\\s*?(\\||\\{\\{.+?\\}\\}|.+?)*?\\}\\}", FL.pipeFence(l));
 	}
 
 	/**

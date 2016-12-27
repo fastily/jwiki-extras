@@ -1,13 +1,10 @@
 package fastily.jwikix.tplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import fastily.jwiki.core.Reply;
-import fastily.jwiki.util.JSONP;
 
 /**
  * Utilities used by the <code>tplate</code> package.
@@ -33,7 +30,7 @@ public final class TUtils
 	 */
 	private static <T> ArrayList<T> sgAL(T t)
 	{
-		return new ArrayList<>(Arrays.asList(t));
+		return new ArrayList<>(Collections.singletonList(t));
 	}
 
 	/**

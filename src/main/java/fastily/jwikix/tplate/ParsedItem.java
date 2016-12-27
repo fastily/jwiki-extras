@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 import org.json.JSONObject;
 import org.json.XML;
 
-import fastily.jwiki.core.Reply;
 import fastily.jwiki.core.Wiki;
 import fastily.jwiki.util.FL;
 
@@ -94,9 +93,17 @@ public class ParsedItem
 	{
 		ArrayList<String> pl = FL.toSAL("prop", "parsetree");
 		pl.addAll(params);
+		try
+		{
 		return new ParsedItem(
-				XML.toJSONObject(wiki.basicGET("parse", pl.toArray(new String[0])).getJSONObjectR("parsetree").getString("*"))
+				XML.toJSONObject(new Reply(new JSONObject(wiki.basicGET("parse", pl.toArray(new String[0])).body().string())).getJSONObjectR("parsetree").getString("*"))
 						.getJSONObject("root"));
+		}
+		catch(Throwable e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
