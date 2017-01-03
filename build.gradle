@@ -54,8 +54,6 @@ dependencies {
     compile project(":jwiki")
     
     compile "org.json:json:20160810"
-
-    //testCompile 'junit:junit:4.12'
 }
 
 task wrapper(type: Wrapper) {
