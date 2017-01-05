@@ -52,8 +52,6 @@ repositories {
 
 dependencies {
     compile project(":jwiki")
-    
-    compile "org.json:json:20160810"
 }
 
 task wrapper(type: Wrapper) {
